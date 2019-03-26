@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Farm Run Helper</string>
+
+    <string-array name="herb_types">
+        <item>---</item>
+        <item>Guam</item>
+        <item>Marrentil</item>
+        <item>Harralander</item>
+        <item>Ranarr</item>
+        <item>Toadflax</item>
+        <item>Irit</item>
+        <item>Avantoe</item>
+        <item>Kwuarm</item>
+        <item>Snapdragon</item>
+        <item>Cadantine</item>
+        <item>Lantadyme</item>
+        <item>Dwarf weed</item>
+        <item>Torstol</item>
+    </string-array>
+
+    <string-array name="flower_types">
+        <item>---</item>
+        <item>Marigold</item>
+        <item>Rosemary</item>
+        <item>Nasturtium</item>
+        <item>Woad</item>
+        <item>Limpwurt</item>
+        <item>White lily</item>
+    </string-array>
+
+    <string-array name="tree_types">
+        <item>---</item>
+        <item>Oak</item>
+        <item>Willow</item>
+        <item>Maple</item>
+        <item>Yew</item>
+        <item>Magic</item>
+    </string-array>
+
+    <string-array name="tree_patches">
+        <item>Lumbridge</item>
+        <item>Varrock</item>
+        <item>Falador</item>
+        <item>Taverley</item>
+        <item>Gnome Stronghold</item>
+        <item>Farming Guild</item>
+    </string-array>
+
+    <string-array name="herb_flower_patches">
+        <item>Falador</item>
+        <item>Canifis</item>
+        <item>Ardougne</item>
+        <item>Catherby</item>
+        <item>Hosidius</item>
+        <item>Farming Guild</item>
+    </string-array>
+
+    <string-array name="herb_only_patches">
+        <item>Trollheim</item>
+        <item>Weiss</item>
+        <item>Harmony"</item>
+    </string-array>
+
+    <string-array name="compost_types">
+        <item>---</item>
+        <item>Compost</item>
+        <item>Super Compost</item>
+        <item>Ultra Compost"</item>
+    </string-array>
+
+</resources>
