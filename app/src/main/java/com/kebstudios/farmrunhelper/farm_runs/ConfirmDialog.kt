@@ -38,6 +38,8 @@ class ConfirmDialog : DialogFragment() {
                 val planted = hashMapOf<String, Int>()
                 val statuses = hashMapOf<String, Int>()
                 val composts = hashMapOf<String, Int>()
+                val secateurs = hashMapOf<Boolean, Int>()
+                val levels = hashMapOf<Int, Int>()
                 var hesporiSeeds = 0
 
                 val str = SpannableStringBuilder().apply {
@@ -46,12 +48,18 @@ class ConfirmDialog : DialogFragment() {
                             harvested[item.harvestType] = (harvested[item.harvestType] ?: 0) + 1
                             harvestAmounts[item.harvestType] = (harvestAmounts[item.harvestType] ?: 0) +
                                     item.harvestAmount
+
+                            if (item.patchType != "tree")
+                                secateurs[item.secateurs] = (secateurs[item.secateurs] ?: 0) + 1
                         }
                         if (!item.plantedType.startsWith("-"))
                             planted[item.plantedType] = (planted[item.plantedType] ?: 0) + 1
 
                         if (item.patchStatus != "alive" || item.harvestAmount > 0 || item.patchType == "tree")
                             statuses[item.patchStatus] = (statuses[item.patchStatus] ?: 0) + 1
+
+                        if (item.patchStatus != "alive" || !item.harvestType.startsWith("-") || !item.plantedType.startsWith("-"))
+                            levels[item.farmingLevel] = (levels[item.farmingLevel] ?: 0) + 1
 
                         hesporiSeeds += item.hesporiSeeds
 
@@ -84,8 +92,11 @@ class ConfirmDialog : DialogFragment() {
 
                         italic { append("farming lvl: ${item.farmingLevel}\n") }
                         italic { append("patch status: ${item.patchStatus}\n") }
-                        italic { append("secateurs: ${item.secateurs}\n") }
 
+                        if (!item.secateurs)
+                            color(0xffdd8800.toInt()) { italic { append("secateurs: ${item.secateurs}\n") } }
+                        else
+                            color(0xff93ffc6.toInt()) { italic { append("secateurs: ${item.secateurs}\n") } }
                         append("\n---------------------------------------------------------------------\n")
                     }
 
@@ -129,6 +140,26 @@ class ConfirmDialog : DialogFragment() {
                     italic {
                         statuses.forEach { entry ->
                             append("\t${entry.key}: ${entry.value}\n")
+                        }
+                        append("\n")
+                    }
+
+                    if (secateurs.size > 0) {
+                        append("Secateurs:\n")
+
+                        italic {
+                            secateurs.forEach { entry ->
+                                append("\t${entry.key} in ${entry.value} patches\n")
+                            }
+                            append("\n")
+                        }
+                    }
+
+                    append("Levels:\n")
+
+                    italic {
+                        levels.forEach { entry ->
+                            append("\t${entry.key} farming at ${entry.value} patches\n")
                         }
                         append("\n")
                     }

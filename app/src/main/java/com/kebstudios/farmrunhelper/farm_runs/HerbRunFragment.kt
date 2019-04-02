@@ -63,6 +63,43 @@ class HerbRunFragment : FarmRunFragment() {
                     findViewById<TextView>(R.id.patch_type_flower).text = "Flower Patch"
                     findViewById<Spinner>(R.id.compost_spinner_flower).setSelection(prefs.getInt("${patch.toLowerCase()}_flower_compost_type",0))
                     findViewById<CheckBox>(R.id.secateurs_box_flower).isChecked = prefs.getBoolean("${patch.toLowerCase()}_flower_secateurs", false)
+
+                    findViewById<RadioGroup>(R.id.status_group_flower).setOnCheckedChangeListener { _, checkedId ->
+                        if (checkedId == R.id.alive_button_flower) {
+                            findViewById<NumberPicker>(R.id.harvest_amount_flower).apply {
+                                setValue(prefs.getInt("${patch.toLowerCase()}_flower_harvest", 0))
+                            }
+                            findViewById<NumberPicker>(R.id.hespori_seeds_flower).apply {
+                                setValue(0)
+                            }
+                            findViewById<Spinner>(R.id.harvest_spinner_flower).setSelection(prefs.getInt("${patch.toLowerCase()}_flower_planted_type",0))
+                            findViewById<Spinner>(R.id.plant_spinner_flower).setSelection(prefs.getInt("${patch.toLowerCase()}_flower_planted_type",0))
+                            findViewById<Spinner>(R.id.compost_spinner_flower).setSelection(prefs.getInt("${patch.toLowerCase()}_flower_compost_type",0))
+                            findViewById<CheckBox>(R.id.secateurs_box_flower).isChecked = prefs.getBoolean("${patch.toLowerCase()}_flower_secateurs", false)
+                        } else if (checkedId == R.id.deseased_button_flower || checkedId == R.id.resurrected_button_flower) {
+                            findViewById<NumberPicker>(R.id.harvest_amount_flower).apply {
+                                setValue(0)
+                            }
+                            findViewById<NumberPicker>(R.id.hespori_seeds_flower).apply {
+                                setValue(0)
+                            }
+                            findViewById<Spinner>(R.id.harvest_spinner_flower).setSelection(0)
+                            findViewById<Spinner>(R.id.plant_spinner_flower).setSelection(0)
+                            findViewById<Spinner>(R.id.compost_spinner_flower).setSelection(0)
+                            findViewById<CheckBox>(R.id.secateurs_box_flower).isChecked = prefs.getBoolean("${patch.toLowerCase()}_flower_secateurs", false)
+                        } else if (checkedId == R.id.dead_button_flower) {
+                            findViewById<NumberPicker>(R.id.harvest_amount_flower).apply {
+                                setValue(0)
+                            }
+                            findViewById<NumberPicker>(R.id.hespori_seeds_flower).apply {
+                                setValue(0)
+                            }
+                            findViewById<Spinner>(R.id.harvest_spinner_flower).setSelection(0)
+                            findViewById<Spinner>(R.id.plant_spinner_flower).setSelection(prefs.getInt("${patch.toLowerCase()}_flower_planted_type",0))
+                            findViewById<Spinner>(R.id.compost_spinner_flower).setSelection(prefs.getInt("${patch.toLowerCase()}_flower_compost_type",0))
+                            findViewById<CheckBox>(R.id.secateurs_box_flower).isChecked = prefs.getBoolean("${patch.toLowerCase()}_flower_secateurs", false)
+                        }
+                    }
                 }
                 v
             }
@@ -88,6 +125,43 @@ class HerbRunFragment : FarmRunFragment() {
             findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_planted_type",0))
             findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_compost_type",0))
             findViewById<CheckBox>(R.id.secateurs_box).isChecked = prefs.getBoolean("${patch.toLowerCase()}_herb_secateurs", false)
+
+            findViewById<RadioGroup>(R.id.status_group).setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == R.id.alive_button) {
+                    findViewById<NumberPicker>(R.id.harvest_amount).apply {
+                        setValue(prefs.getInt("${patch.toLowerCase()}_herb_harvest", 0))
+                    }
+                    findViewById<NumberPicker>(R.id.hespori_seeds).apply {
+                        setValue(0)
+                    }
+                    findViewById<Spinner>(R.id.harvest_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_planted_type",0))
+                    findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_planted_type",0))
+                    findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_compost_type",0))
+                    findViewById<CheckBox>(R.id.secateurs_box).isChecked = prefs.getBoolean("${patch.toLowerCase()}_herb_secateurs", false)
+                } else if (checkedId == R.id.deseased_button || checkedId == R.id.resurrected_button) {
+                    findViewById<NumberPicker>(R.id.harvest_amount).apply {
+                        setValue(0)
+                    }
+                    findViewById<NumberPicker>(R.id.hespori_seeds).apply {
+                        setValue(0)
+                    }
+                    findViewById<Spinner>(R.id.harvest_spinner).setSelection(0)
+                    findViewById<Spinner>(R.id.plant_spinner).setSelection(0)
+                    findViewById<Spinner>(R.id.compost_spinner).setSelection(0)
+                    findViewById<CheckBox>(R.id.secateurs_box).isChecked = prefs.getBoolean("${patch.toLowerCase()}_herb_secateurs", false)
+                } else if (checkedId == R.id.dead_button) {
+                    findViewById<NumberPicker>(R.id.harvest_amount).apply {
+                        setValue(0)
+                    }
+                    findViewById<NumberPicker>(R.id.hespori_seeds).apply {
+                        setValue(0)
+                    }
+                    findViewById<Spinner>(R.id.harvest_spinner).setSelection(0)
+                    findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_planted_type",0))
+                    findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_compost_type",0))
+                    findViewById<CheckBox>(R.id.secateurs_box).isChecked = prefs.getBoolean("${patch.toLowerCase()}_herb_secateurs", false)
+                }
+            }
         }
 
         root = view
@@ -150,11 +224,18 @@ class HerbRunFragment : FarmRunFragment() {
             prefs.edit {
                 if (list[1].plantedType != list[1].harvestType || list[1].plantedType[1] != '-' || list[1].patchStatus != "alive")
                     putInt("farm_lvl", flowerPatch.findViewById<NumberPicker>(R.id.farm_lvl_flower).getValue())
-                putInt("${patch.toLowerCase()}_flower_harvest", flowerPatch.findViewById<NumberPicker>(R.id.harvest_amount_flower).getValue())
-                putInt("${patch.toLowerCase()}_flower_harvest_type", flowerPatch.findViewById<Spinner>(R.id.harvest_spinner_flower).selectedItemPosition)
-                putInt("${patch.toLowerCase()}_flower_planted_type", flowerPatch.findViewById<Spinner>(R.id.plant_spinner_flower).selectedItemPosition)
-                putInt("${patch.toLowerCase()}_flower_compost_type", flowerPatch.findViewById<Spinner>(R.id.compost_spinner_flower).selectedItemPosition)
-                putBoolean("${patch.toLowerCase()}_flower_secateurs", flowerPatch.findViewById<CheckBox>(R.id.secateurs_box_flower).isChecked)
+                if (list[1].patchStatus == "alive") {
+                    putInt("${patch.toLowerCase()}_flower_harvest", flowerPatch.findViewById<NumberPicker>(R.id.harvest_amount_flower).getValue())
+                    putInt("${patch.toLowerCase()}_flower_harvest_type", flowerPatch.findViewById<Spinner>(R.id.harvest_spinner_flower).selectedItemPosition)
+
+                    putInt("${patch.toLowerCase()}_flower_planted_type", flowerPatch.findViewById<Spinner>(R.id.plant_spinner_flower).selectedItemPosition)
+                    putInt("${patch.toLowerCase()}_flower_compost_type", flowerPatch.findViewById<Spinner>(R.id.compost_spinner_flower).selectedItemPosition)
+
+                    putBoolean("${patch.toLowerCase()}_flower_secateurs", flowerPatch.findViewById<CheckBox>(R.id.secateurs_box_flower).isChecked)
+                } else if (list[1].patchStatus == "dead") {
+                    putInt("${patch.toLowerCase()}_flower_planted_type", flowerPatch.findViewById<Spinner>(R.id.plant_spinner_flower).selectedItemPosition)
+                    putInt("${patch.toLowerCase()}_flower_compost_type", flowerPatch.findViewById<Spinner>(R.id.compost_spinner_flower).selectedItemPosition)
+                }
             }
 
         }
@@ -162,11 +243,18 @@ class HerbRunFragment : FarmRunFragment() {
         prefs.edit {
             if (list[0].plantedType != list[0].harvestType || list[0].plantedType[0] != '-' || list[0].patchStatus != "alive")
                 putInt("farm_lvl", herbPatch.findViewById<NumberPicker>(R.id.farm_lvl).getValue())
-            putInt("${patch.toLowerCase()}_herb_harvest", herbPatch.findViewById<NumberPicker>(R.id.harvest_amount).getValue())
-            putInt("${patch.toLowerCase()}_herb_harvest_type", herbPatch.findViewById<Spinner>(R.id.harvest_spinner).selectedItemPosition)
-            putInt("${patch.toLowerCase()}_herb_planted_type", herbPatch.findViewById<Spinner>(R.id.plant_spinner).selectedItemPosition)
-            putInt("${patch.toLowerCase()}_herb_compost_type", herbPatch.findViewById<Spinner>(R.id.compost_spinner).selectedItemPosition)
-            putBoolean("${patch.toLowerCase()}_herb_secateurs", herbPatch.findViewById<CheckBox>(R.id.secateurs_box).isChecked)
+            if (list[0].patchStatus == "alive") {
+                putInt("${patch.toLowerCase()}_herb_harvest", herbPatch.findViewById<NumberPicker>(R.id.harvest_amount).getValue())
+                putInt("${patch.toLowerCase()}_herb_harvest_type", herbPatch.findViewById<Spinner>(R.id.harvest_spinner).selectedItemPosition)
+
+                putInt("${patch.toLowerCase()}_herb_planted_type", herbPatch.findViewById<Spinner>(R.id.plant_spinner).selectedItemPosition)
+                putInt("${patch.toLowerCase()}_herb_compost_type", herbPatch.findViewById<Spinner>(R.id.compost_spinner).selectedItemPosition)
+
+                putBoolean("${patch.toLowerCase()}_herb_secateurs", herbPatch.findViewById<CheckBox>(R.id.secateurs_box).isChecked)
+            } else if (list[0].patchStatus == "dead") {
+                putInt("${patch.toLowerCase()}_herb_planted_type", herbPatch.findViewById<Spinner>(R.id.plant_spinner).selectedItemPosition)
+                putInt("${patch.toLowerCase()}_herb_compost_type", herbPatch.findViewById<Spinner>(R.id.compost_spinner).selectedItemPosition)
+            }
         }
 
         return list

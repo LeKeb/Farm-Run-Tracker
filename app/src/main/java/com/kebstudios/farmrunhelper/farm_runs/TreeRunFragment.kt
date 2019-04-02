@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
@@ -27,23 +28,46 @@ class TreeRunFragment : FarmRunFragment() {
 
         val view = inflater.inflate(R.layout.tree_run_fragment, container, false) as ConstraintLayout
 
-        view.findViewById<NumberPicker>(R.id.farm_lvl).apply {
-            setMax(99)
-            setMin(1)
-
-            setValue(prefs.getInt("farm_lvl", 1))
-        }
-
-        view.findViewById<NumberPicker>(R.id.hespori_seeds).apply {
-            setMax(5)
-            setMin(0)
-            setValue(0)
-        }
-
         view.apply {
+            findViewById<NumberPicker>(R.id.farm_lvl).apply {
+                setMax(99)
+                setMin(1)
+
+                setValue(prefs.getInt("farm_lvl", 1))
+            }
+            findViewById<NumberPicker>(R.id.hespori_seeds).apply {
+                setMax(5)
+                setMin(0)
+                setValue(0)
+            }
             findViewById<Spinner>(R.id.harvest_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_planted_type",0))
             findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_compost_type",0))
             findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_planted_type",0))
+
+            findViewById<RadioGroup>(R.id.status_group).setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == R.id.alive_button) {
+                    findViewById<NumberPicker>(R.id.hespori_seeds).apply {
+                        setValue(0)
+                    }
+                    findViewById<Spinner>(R.id.harvest_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_planted_type",0))
+                    findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_planted_type",0))
+                    findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_compost_type",0))
+                } else if (checkedId == R.id.deseased_button || checkedId == R.id.resurrected_button) {
+                    findViewById<NumberPicker>(R.id.hespori_seeds).apply {
+                        setValue(0)
+                    }
+                    findViewById<Spinner>(R.id.harvest_spinner).setSelection(0)
+                    findViewById<Spinner>(R.id.plant_spinner).setSelection(0)
+                    findViewById<Spinner>(R.id.compost_spinner).setSelection(0)
+                } else if (checkedId == R.id.dead_button) {
+                    findViewById<NumberPicker>(R.id.hespori_seeds).apply {
+                        setValue(0)
+                    }
+                    findViewById<Spinner>(R.id.harvest_spinner).setSelection(0)
+                    findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_planted_type",0))
+                    findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_compost_type",0))
+                }
+            }
         }
 
         root = view
@@ -88,9 +112,14 @@ class TreeRunFragment : FarmRunFragment() {
             prefs.edit {
                 if (it[0].plantedType != it[0].harvestType || it[0].plantedType[0] != '-' || it[0].patchStatus != "alive")
                     putInt("farm_lvl", root!!.findViewById<NumberPicker>(R.id.farm_lvl).getValue())
-                putInt("${patch.toLowerCase()}_tree_harvest_type", root!!.findViewById<Spinner>(R.id.harvest_spinner).selectedItemPosition)
-                putInt("${patch.toLowerCase()}_tree_compost_type", root!!.findViewById<Spinner>(R.id.compost_spinner).selectedItemPosition)
-                putInt("${patch.toLowerCase()}_tree_planted_type", root!!.findViewById<Spinner>(R.id.plant_spinner).selectedItemPosition)
+                if (it[0].patchStatus == "alive") {
+                    putInt("${patch.toLowerCase()}_tree_harvest_type", root!!.findViewById<Spinner>(R.id.harvest_spinner).selectedItemPosition)
+                    putInt("${patch.toLowerCase()}_tree_compost_type", root!!.findViewById<Spinner>(R.id.compost_spinner).selectedItemPosition)
+                    putInt("${patch.toLowerCase()}_tree_planted_type", root!!.findViewById<Spinner>(R.id.plant_spinner).selectedItemPosition)
+                } else if (it[0].patchStatus == "dead") {
+                    putInt("${patch.toLowerCase()}_tree_compost_type", root!!.findViewById<Spinner>(R.id.compost_spinner).selectedItemPosition)
+                    putInt("${patch.toLowerCase()}_tree_planted_type", root!!.findViewById<Spinner>(R.id.plant_spinner).selectedItemPosition)
+                }
             }
         }
     }

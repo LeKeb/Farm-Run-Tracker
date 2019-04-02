@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kebstudios.farmrunhelper.R
 import com.kebstudios.farmrunhelper.data.FarmRunDatabase
 import kotlinx.android.synthetic.main.activity_data.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DataActivity : AppCompatActivity() {
 
+    private val format = SimpleDateFormat("YYYY/MM/dd - HH:mm:ss.SSS", Locale.getDefault())
     private lateinit var mAdapter: DataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,10 +39,11 @@ class DataActivity : AppCompatActivity() {
             val texts = mutableListOf<SpannableStringBuilder>()
 
             runs.forEach {
+                val str = format.format(Date(it.timestamp))
                 texts.add(
                     SpannableStringBuilder().apply {
                         append("Farm run id #${it.id}\n")
-                        scale(0.7f) {italic { append("\ttimestamp ${it.timestamp}") }}
+                        scale(0.7f) {italic { append("\t$str") }}
 
                     }
                 )
