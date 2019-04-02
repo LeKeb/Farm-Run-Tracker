@@ -41,7 +41,7 @@ class TreeRunFragment : FarmRunFragment() {
         }
 
         view.apply {
-            findViewById<Spinner>(R.id.harvest_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_harvest_type",0))
+            findViewById<Spinner>(R.id.harvest_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_planted_type",0))
             findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_compost_type",0))
             findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_tree_planted_type",0))
         }

@@ -54,7 +54,7 @@ class HerbRunFragment : FarmRunFragment() {
                     }
                     findViewById<Spinner>(R.id.harvest_spinner_flower).apply {
                         adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.flower_types))
-                        setSelection(prefs.getInt("${patch.toLowerCase()}_flower_harvest_type",0))
+                        setSelection(prefs.getInt("${patch.toLowerCase()}_flower_planted_type",0))
                     }
                     findViewById<Spinner>(R.id.plant_spinner_flower).apply {
                         adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.flower_types))
@@ -84,7 +84,7 @@ class HerbRunFragment : FarmRunFragment() {
                 setValue(0)
             }
             findViewById<TextView>(R.id.patch_type).text = "Herb Patch"
-            findViewById<Spinner>(R.id.harvest_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_harvest_type",0))
+            findViewById<Spinner>(R.id.harvest_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_planted_type",0))
             findViewById<Spinner>(R.id.plant_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_planted_type",0))
             findViewById<Spinner>(R.id.compost_spinner).setSelection(prefs.getInt("${patch.toLowerCase()}_herb_compost_type",0))
             findViewById<CheckBox>(R.id.secateurs_box).isChecked = prefs.getBoolean("${patch.toLowerCase()}_herb_secateurs", false)
