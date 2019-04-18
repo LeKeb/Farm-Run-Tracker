@@ -16,7 +16,6 @@ import java.util.*
 
 class DataActivity : AppCompatActivity() {
 
-    private val format = SimpleDateFormat("YYYY/MM/dd - HH:mm:ss.SSS", Locale.getDefault())
     private lateinit var mAdapter: DataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,23 +33,10 @@ class DataActivity : AppCompatActivity() {
         }
 
         AsyncTask.execute {
-            val runs = db.farmRunDao().getAllFarmRuns()
-
-            val texts = mutableListOf<SpannableStringBuilder>()
-
-            runs.forEach {
-                val str = format.format(Date(it.timestamp))
-                texts.add(
-                    SpannableStringBuilder().apply {
-                        append("Farm run id #${it.id}\n")
-                        scale(0.7f) {italic { append("\t$str") }}
-
-                    }
-                )
-            }
+            val runs = db.farmRunDao().getAllFarmRuns().sortedBy { -it.id }
 
             runOnUiThread {
-                mAdapter.changeData(texts)
+                mAdapter.changeData(runs)
             }
         }
     }
